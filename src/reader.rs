@@ -78,7 +78,7 @@ impl Reader
         }
         else 
         {
-            String::from("EOF")
+            String::from("Eof")
         }
     }
 }
@@ -108,7 +108,7 @@ fn read_list(reader: &mut Reader) -> OnionRet
     loop 
     {
         let token = reader.peek();
-        if token == "EOF"
+        if token == "Eof"
         {
             panic!("Expected )");
         }

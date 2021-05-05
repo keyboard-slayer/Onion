@@ -18,20 +18,33 @@
  *
  */
 
-mod assert;
-mod load_file;
-mod print;
-
-use std::collections::HashMap;
 use crate::reader::OnionRet;
+use std::process::exit;
 
-pub fn get_builtin() -> HashMap<String, OnionRet>
+pub fn assert_scheme(wrapped: OnionRet) -> OnionRet 
 {
-    let mut funcs: HashMap<String, OnionRet> = HashMap::new();
+    if let OnionRet::List(args) = wrapped 
+    {
+        if args.len() == 0
+        {
+            eprintln!("assert: No argument provided");
+            exit(1);
+        }
+        if args.len() > 1
+        {
+            eprintln!("assert: Too much arguments");
+            exit(1);
+        }
 
-    funcs.insert(String::from("load-file"), OnionRet::Fn(load_file::load_file));
-    funcs.insert(String::from("assert"), OnionRet::Fn(assert::assert_scheme));
-    funcs.insert(String::from("println"), OnionRet::Fn(print::println));
+        if let OnionRet::Bool(truth) = args.get(0).unwrap()
+        {
+            if !truth 
+            {
+                eprintln!("Assertion failed");
+                exit(1);
+            }
+        }
+    }
 
-    funcs
+    OnionRet::Nil
 }

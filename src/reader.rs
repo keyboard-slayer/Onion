@@ -37,7 +37,6 @@ pub enum OnionRet
     List(Vec<OnionRet>),
     Symbol(String),
     Fn(fn(OnionRet) -> OnionRet),
-    Error(String)
 }
 
 impl OnionRet 
@@ -47,6 +46,18 @@ impl OnionRet
         if let OnionRet::List(arr) = self 
         {
             arr.push(token)
+        }
+    }
+
+    pub fn is_nil(self) -> bool
+    {
+        if let OnionRet::Nil = self 
+        {
+            true
+        }
+        else
+        {
+            false
         }
     }
 }
@@ -183,17 +194,11 @@ pub fn read_str(content: String) -> OnionRet
         pos: 0
     };
 
+
     while reader.peek() != "Eof"
     {
         return_value.append(read_form(&mut reader));
     }
-
-    if let OnionRet::List(unwrapped) = return_value 
-    {
-        return unwrapped.get(0).unwrap().clone();
-    }
-    else 
-    {
-        panic!()
-    }
+    
+    return_value
 }

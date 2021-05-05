@@ -18,19 +18,10 @@
  *
  */
 
-use crate::builtin::*;
+use crate::builtin::get_builtin;
 use crate::reader::OnionRet;
-
 use std::process::exit;
-use std::collections::HashMap;
 
-fn get_builtin() -> HashMap<String, OnionRet>
-{
-    let mut funcs: HashMap<String, OnionRet> = HashMap::new();
-    funcs.insert(String::from("load-file"), OnionRet::Fn(load_file::load_file));
-
-    funcs
-}
 
 fn execute(lst: Vec<OnionRet>) -> OnionRet 
 {
@@ -42,15 +33,25 @@ fn execute(lst: Vec<OnionRet>) -> OnionRet
     }
     else 
     {
-        eprintln!("Expected a function");
-        exit(1);
+        let arg = lst.get(0).unwrap().clone();
+
+        if !arg.is_nil() 
+        {
+            eprintln!("Expected a function");
+            exit(1);
+        }
+        else 
+        {
+            return OnionRet::Nil;
+        }
     }
 }
 
 pub fn eval(tokens: OnionRet) -> OnionRet
 {
     let funcs = get_builtin();
-    let mut return_value: OnionRet = OnionRet::Nil;
+
+    let mut _return_value: OnionRet = OnionRet::Nil;
 
     match tokens 
     {
@@ -61,13 +62,13 @@ pub fn eval(tokens: OnionRet) -> OnionRet
                 lst.push(eval(tok.clone()));
             }
             
-            return_value = execute(lst);
+            _return_value = execute(lst);
         }
         
         OnionRet::Symbol(s) => {
             if let Some(func) = funcs.get(&s) 
             {
-                return_value = func.clone();
+                _return_value = func.clone();
             }
             else 
             {
@@ -76,12 +77,8 @@ pub fn eval(tokens: OnionRet) -> OnionRet
             }
         }
 
-        OnionRet::Str(s) => {
-            return_value = OnionRet::Str(s);
-        }
-
-        _ => eprintln!("TODO !")
+        _ => _return_value = tokens,
     }
 
-    return_value
+    _return_value
 }

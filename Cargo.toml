@@ -1,0 +1,15 @@
+[package]
+name = "onion"
+version = "0.1.0"
+authors = ["キーボードスレイヤー"]
+edition = "2018"
+repository = "https://github.com/Keyboard-Slayer/onion"
+readme = "https://github.com/Keyboard-Slayer/onion/blob/main/README.md"
+description = "It has layers !"
+license = "GPL-3.0"
+keywords = ["lisp", "language", "onion", "layers"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+regex = "1.5.3"

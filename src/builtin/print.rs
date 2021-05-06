@@ -40,6 +40,7 @@ pub fn println(args: Vec<OnionRet>) -> OnionRet
                 }
             }
 
+            OnionRet::Float(f) => to_print.push(format!("{:.1}", f)),
             OnionRet::Str(s) => to_print.push(s),
             OnionRet::List(_) => eprintln!("TODO !"), /* Make a format function */
             OnionRet::Int(d) => to_print.push(d.to_string()),

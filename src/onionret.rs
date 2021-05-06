@@ -25,6 +25,7 @@ pub enum OnionRet
     Nil,
     Bool(bool),
     Int(i64),
+    Float(f64),
     Str(String),
     List(Vec<OnionRet>),
     Symbol(String),
@@ -51,6 +52,7 @@ impl OnionRet
             OnionRet::Str(_) => String::from("str"),
             OnionRet::List(_) => String::from("list"),
             OnionRet::Symbol(_) => String::from("symbol"),
+            OnionRet::Float(_) => String::from("float"),
             OnionRet::Fn(_) => String::from("function")
         }
     }
@@ -84,6 +86,7 @@ impl PartialEq for OnionRet
             OnionRet::Int(i) => if let OnionRet::Int(i2) = other {return i == i2; }
             OnionRet::Str(s) => if let OnionRet::Str(s2) = other {return s == s2; }
             OnionRet::List(v) => if let OnionRet::List(v2) = other {return v == v2; }
+            OnionRet::Float(f) => if let OnionRet::Float(f2) = other {return f == f2; }
             OnionRet::Symbol(_) => panic!(),
             OnionRet::Fn(_) => panic!(),
         }

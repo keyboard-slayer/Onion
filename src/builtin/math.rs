@@ -78,3 +78,145 @@ pub fn add(args: Vec<OnionRet>) -> OnionRet
     
     acc
 }
+
+pub fn minus(args: Vec<OnionRet>) -> OnionRet 
+{
+    if args.len() < 2 
+    {
+        eprintln!("-: Not enough arguments provided");
+        exit(1);
+    }
+
+    let mut acc: i64 = 0;
+
+    if let OnionRet::Int(d) = args.get(0).unwrap()
+    {
+        acc += d;
+    }
+    else 
+    {
+        eprintln!("-: Invalid argument type");
+        exit(1);
+    }
+
+    let mut new_arg = args.clone();
+    new_arg.remove(0);
+
+    for arg in new_arg
+    {
+        if let OnionRet::Int(d) = arg 
+        {
+            acc -= d;
+        }
+        else 
+        {
+            eprintln!("-: Invalid argument type");
+            exit(1);
+        }
+    }
+
+    OnionRet::Int(acc)
+}
+
+pub fn mult(args: Vec<OnionRet>) -> OnionRet 
+{
+    if args.len() < 2 
+    {
+        eprintln!("-: Not enough arguments provided");
+        exit(1);
+    }
+
+    let mut acc: i64 = 1;
+    let mut final_str: String = String::from("");
+
+    for arg in args 
+    {
+        match arg 
+        {
+            OnionRet::Int(d) => acc *= d,
+            OnionRet::Str(s) => {
+                if !final_str.is_empty()
+                {
+                    eprintln!("*: Can only have on string");
+                    exit(1);
+                }
+                else 
+                {
+                    final_str = s;
+                }
+            }
+            _ => {
+                eprintln!("*: Invalid argument type");
+                exit(1);
+            }
+        }
+    }
+
+    if !final_str.is_empty()
+    {
+        OnionRet::Str(final_str.repeat(acc as usize))
+    }
+    else 
+    {
+        OnionRet::Int(acc)
+    }
+}
+
+pub fn div(args: Vec<OnionRet>) -> OnionRet 
+{
+    if args.len() < 2 
+    {
+        eprintln!("/: Not enough arguments provided");
+        exit(1);
+    }
+
+    let mut acc: f64 = 0.0;
+
+    if let OnionRet::Int(d) = args.get(0).unwrap()
+    {
+        acc += *d as f64;
+    }
+    else 
+    {
+        eprintln!("/: Invalid argument type");
+        exit(1);
+    }
+
+    let mut new_arg = args.clone();
+    new_arg.remove(0);
+
+    for arg in new_arg
+    {
+        if let OnionRet::Int(d) = arg 
+        {
+            acc /= d as f64;
+        }
+        else 
+        {
+            eprintln!("/: Invalid argument type");
+            exit(1);
+        }
+    }
+
+    OnionRet::Float(acc)
+}
+
+pub fn full_div(args: Vec<OnionRet>) -> OnionRet 
+{
+    if args.len() < 2 
+    {
+        eprintln!("/: Not enough arguments provided");
+        exit(1);
+    }
+
+    let div_result = div(args);
+
+    if let OnionRet::Float(f) = div_result 
+    {
+        OnionRet::Int(f as i64)
+    }
+    else 
+    {
+        panic!()
+    }
+}

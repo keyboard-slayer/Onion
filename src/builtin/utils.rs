@@ -21,28 +21,21 @@
 use crate::onionret::OnionRet;
 use std::process::exit;
 
-pub fn assert_scheme(args: Vec<OnionRet>) -> OnionRet 
+pub fn typeof_onion(args: Vec<OnionRet>) -> OnionRet 
 {
-
-    if args.len() == 0
-    {
-        eprintln!("assert: No argument provided");
-        exit(1);
-    }
     if args.len() > 1
     {
-        eprintln!("assert: Too much arguments");
+        eprintln!("typeof: Too many arguments");
+        exit(1);
+    }
+    if args.len() == 0
+    {
+        eprintln!("typeof: No arguments provided");
         exit(1);
     }
 
-    if let OnionRet::Bool(truth) = args.get(0).unwrap()
-    {
-        if !truth 
-        {
-            eprintln!("Assertion failed");
-            exit(1);
-        }
-    }
-    
-    OnionRet::Nil
+    let element = args.get(0).unwrap();
+    let typename = element.clone().type_name();
+
+    OnionRet::Str(typename)
 }

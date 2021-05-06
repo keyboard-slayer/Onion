@@ -106,6 +106,7 @@ fn read_atom(reader: &mut Reader) -> OnionRet
 {
     let int_re = Regex::new(r"^-?[0-9]+$").unwrap();
     let str_re = Regex::new(r#""(?:\\.|[^\\"])*""#).unwrap();
+    let float_re = Regex::new(r"[+-]?(\d+([.]\d*)?(e[+-]?\d+)?|[.]\d+(e[+-]?\d+)?)").unwrap();
 
     let token = reader.next();
 
@@ -123,6 +124,10 @@ fn read_atom(reader: &mut Reader) -> OnionRet
             else if str_re.is_match(&token)
             {
                 OnionRet::Str(token[1..token.len()-1].to_string())
+            }
+            else if float_re.is_match(&token)
+            {
+                OnionRet::Float(token.parse().unwrap())
             }
             else 
             {

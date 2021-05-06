@@ -23,6 +23,7 @@ mod load_file;
 mod print;
 mod boolean;
 mod math;
+mod utils;
 
 use std::collections::HashMap;
 use crate::onionret::OnionRet;
@@ -40,5 +41,13 @@ pub fn get_builtin() -> HashMap<String, OnionRet>
     funcs.insert(String::from("<"), OnionRet::Fn(boolean::lt));
 
     funcs.insert(String::from("+"), OnionRet::Fn(math::add));
+    funcs.insert(String::from("-"), OnionRet::Fn(math::minus));
+    funcs.insert(String::from("*"), OnionRet::Fn(math::mult));
+    funcs.insert(String::from("/"), OnionRet::Fn(math::div));
+    funcs.insert(String::from("//"), OnionRet::Fn(math::full_div));
+
+
+    funcs.insert(String::from("typeof"), OnionRet::Fn(utils::typeof_onion));
+
     funcs
 }

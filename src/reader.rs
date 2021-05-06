@@ -19,47 +19,13 @@
  */
 
 use regex::Regex;
+use crate::onionret::OnionRet;
 
 #[derive(Clone, Debug)]
 struct Reader 
 {
     tokens: Vec<String>,
     pos: usize
-}
-
-#[derive(Clone, Debug)]
-pub enum OnionRet
-{
-    Nil,
-    Bool(bool),
-    Int(i64),
-    Str(String),
-    List(Vec<OnionRet>),
-    Symbol(String),
-    Fn(fn(OnionRet) -> OnionRet),
-}
-
-impl OnionRet 
-{
-    fn append(&mut self, token: OnionRet)
-    {
-        if let OnionRet::List(arr) = self 
-        {
-            arr.push(token)
-        }
-    }
-
-    pub fn is_nil(self) -> bool
-    {
-        if let OnionRet::Nil = self 
-        {
-            true
-        }
-        else
-        {
-            false
-        }
-    }
 }
 
 impl Reader 

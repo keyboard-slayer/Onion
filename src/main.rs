@@ -20,6 +20,7 @@
 
 pub mod reader;
 pub mod builtin;
+pub mod onionret;
 mod evaluator;
 
 use std::env::args;

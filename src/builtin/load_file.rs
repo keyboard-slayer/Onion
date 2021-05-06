@@ -18,48 +18,45 @@
  *
  */
 
-use crate::reader::{OnionRet, read_str};
+use crate::onionret::OnionRet;
+use crate::reader::read_str;
 use crate::evaluator::eval;
 use std::process::exit;
 use std::fs;
 
-pub fn load_file(wrapped: OnionRet) -> OnionRet 
+pub fn load_file(args: Vec<OnionRet>) -> OnionRet 
 {
     let source_code: String;
 
-    if let OnionRet::List(args) = wrapped {
-        if args.len() == 0
-        {
-            eprintln!("load-file: No argument provided");
-            exit(1);
-        }
+    if args.len() == 0
+    {
+        eprintln!("load-file: No argument provided");
+        exit(1);
+    }
 
-        if args.len() > 1 
-        {
-            eprintln!("load-file: Too much arguments");
-            exit(1);
-        }
+    if args.len() > 1 
+    {
+        eprintln!("load-file: Too much arguments");
+        exit(1);
+    }
 
-        if let OnionRet::Str(path) =  args.get(0).unwrap()
+    if let OnionRet::Str(path) =  args.get(0).unwrap()
+    {
+        if let Ok(file_content) = fs::read_to_string(path)
         {
-            if let Ok(file_content) = fs::read_to_string(path)
-            {
-                source_code = file_content;
-            }
-            else 
-            {
-                eprintln!("load-file: Couldn't read {}", path);
-                exit(1);
-            }
-
-            return eval(read_str(source_code));
+            source_code = file_content;
         }
         else 
         {
-            eprintln!("load-file: Invalid argument type (Was expecting a string)");
+            eprintln!("load-file: Couldn't read {}", path);
             exit(1);
         }
-    }
 
-    OnionRet::Nil
+        return eval(read_str(source_code));
+    }
+    else 
+    {
+        eprintln!("load-file: Invalid argument type (Was expecting a string)");
+        exit(1);
+    }
 }

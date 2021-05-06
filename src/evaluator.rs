@@ -19,7 +19,7 @@
  */
 
 use crate::builtin::get_builtin;
-use crate::reader::OnionRet;
+use crate::onionret::OnionRet;
 use std::process::exit;
 
 
@@ -29,7 +29,7 @@ fn execute(lst: Vec<OnionRet>) -> OnionRet
     {
         let mut arg = lst.clone();
         arg.remove(0);
-        return func(OnionRet::List(arg.clone()));
+        return func(arg);
     }
     else 
     {

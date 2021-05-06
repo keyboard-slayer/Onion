@@ -18,33 +18,32 @@
  *
  */
 
-use crate::reader::OnionRet;
+use crate::onionret::OnionRet;
 use std::process::exit;
 
-pub fn assert_scheme(wrapped: OnionRet) -> OnionRet 
+pub fn assert_scheme(args: Vec<OnionRet>) -> OnionRet 
 {
-    if let OnionRet::List(args) = wrapped 
-    {
-        if args.len() == 0
-        {
-            eprintln!("assert: No argument provided");
-            exit(1);
-        }
-        if args.len() > 1
-        {
-            eprintln!("assert: Too much arguments");
-            exit(1);
-        }
 
-        if let OnionRet::Bool(truth) = args.get(0).unwrap()
+    if args.len() == 0
+    {
+        eprintln!("assert: No argument provided");
+        exit(1);
+    }
+    if args.len() > 1
+    {
+        eprintln!("assert: Too much arguments");
+        exit(1);
+    }
+
+    if let OnionRet::Bool(truth) = args.get(0).unwrap()
+    {
+        if !truth 
         {
-            if !truth 
-            {
-                eprintln!("Assertion failed");
-                exit(1);
-            }
+            eprintln!("Assertion failed");
+            exit(1);
         }
     }
+    
 
     OnionRet::Nil
 }

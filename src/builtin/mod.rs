@@ -21,9 +21,10 @@
 mod assert;
 mod load_file;
 mod print;
+mod boolean;
 
 use std::collections::HashMap;
-use crate::reader::OnionRet;
+use crate::onionret::OnionRet;
 
 pub fn get_builtin() -> HashMap<String, OnionRet>
 {
@@ -33,5 +34,8 @@ pub fn get_builtin() -> HashMap<String, OnionRet>
     funcs.insert(String::from("assert"), OnionRet::Fn(assert::assert_scheme));
     funcs.insert(String::from("println"), OnionRet::Fn(print::println));
 
+    funcs.insert(String::from("="), OnionRet::Fn(boolean::equal));
+    funcs.insert(String::from(">"), OnionRet::Fn(boolean::gt));
+    funcs.insert(String::from("<"), OnionRet::Fn(boolean::lt));
     funcs
 }

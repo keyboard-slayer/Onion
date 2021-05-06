@@ -18,34 +18,33 @@
  *
  */
 
-use crate::reader::OnionRet;
+use crate::onionret::OnionRet;
 
-pub fn println(wrapped: OnionRet) -> OnionRet
+pub fn println(args: Vec<OnionRet>) -> OnionRet
 {
     let mut to_print: Vec<String> = vec![];
-    if let OnionRet::List(args) = wrapped 
+
+    for arg in args 
     {
-        for arg in args 
+        match arg 
         {
-            match arg 
-            {
-                OnionRet::Nil => to_print.push(String::from("Nil")),
-                OnionRet::Bool(b) => {
-                    if b 
-                    {
-                        to_print.push(String::from("#t"));
-                    }
-                    else 
-                    {
-                        to_print.push(String::from("#f"));
-                    }
+            OnionRet::Nil => to_print.push(String::from("Nil")),
+            OnionRet::Bool(b) => {
+                if b 
+                {
+                    to_print.push(String::from("#t"));
                 }
-                OnionRet::Str(s) => to_print.push(s),
-                OnionRet::List(_) => eprintln!("TODO !"), /* Make a format function */
-                OnionRet::Int(d) => to_print.push(d.to_string()),
-                OnionRet::Symbol(_) => eprintln!("TODO !"),
-                OnionRet::Fn(_) => panic!(),
+                else 
+                {
+                    to_print.push(String::from("#f"));
+                }
             }
+
+            OnionRet::Str(s) => to_print.push(s),
+            OnionRet::List(_) => eprintln!("TODO !"), /* Make a format function */
+            OnionRet::Int(d) => to_print.push(d.to_string()),
+            OnionRet::Symbol(_) => eprintln!("TODO !"),
+            OnionRet::Fn(_) => panic!(),
         }
     }
 

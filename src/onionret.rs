@@ -41,6 +41,20 @@ impl OnionRet
         }
     }
 
+    pub fn type_name(self) -> String 
+    {
+        match self 
+        {
+            OnionRet::Nil => String::from("nil"),
+            OnionRet::Bool(_) => String::from("bool"),
+            OnionRet::Int(_) => String::from("int"),
+            OnionRet::Str(_) => String::from("str"),
+            OnionRet::List(_) => String::from("list"),
+            OnionRet::Symbol(_) => String::from("symbol"),
+            OnionRet::Fn(_) => String::from("function")
+        }
+    }
+
     pub fn is_nil(self) -> bool
     {
         if let OnionRet::Nil = self 
@@ -54,16 +68,11 @@ impl OnionRet
     }
 }
 
-fn type_of<T>(_: &T) -> &str
-{
-    std::any::type_name::<T>()
-}
-
 impl PartialEq for OnionRet 
 {
     fn eq(&self, other: &Self) -> bool 
     {
-        if type_of(self) != type_of(other)
+        if self.clone().type_name() != other.clone().type_name()
         {
             return false;
         }

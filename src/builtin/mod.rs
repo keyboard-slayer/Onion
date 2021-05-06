@@ -22,6 +22,7 @@ mod assert;
 mod load_file;
 mod print;
 mod boolean;
+mod math;
 
 use std::collections::HashMap;
 use crate::onionret::OnionRet;
@@ -37,5 +38,7 @@ pub fn get_builtin() -> HashMap<String, OnionRet>
     funcs.insert(String::from("="), OnionRet::Fn(boolean::equal));
     funcs.insert(String::from(">"), OnionRet::Fn(boolean::gt));
     funcs.insert(String::from("<"), OnionRet::Fn(boolean::lt));
+
+    funcs.insert(String::from("+"), OnionRet::Fn(math::add));
     funcs
 }
